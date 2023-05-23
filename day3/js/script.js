@@ -9,13 +9,25 @@ setInterval(showTime, 1000);
 const gameboard = document.querySelector('.gameboard');
 
 let playerXTurn = true;
+let playerXScore = 0;
+let playerOScore = 0;
 
 const setMark = function() {
     if(this.innerText !== "") {return;}
     this.innerText = playerXTurn ? 'X' : 'O';
     if(winner()) {
-        let w = `Winner is ${playerXTurn ? 'X' : 'O'};`;
-        alert(w);
+        let w;
+        if(playerXTurn) {
+            playerXScore++;
+            document.querySelector("#playerXScore").innerText = playerXScore;
+            w = `Winner is Player 1`;
+        }
+        else {
+            playerOScore++;
+            document.querySelector("#playerOScore").innerText = playerOScore;
+            w = `Winner is Player 2`;
+        }
+     alert(w);
     }
     playerXTurn = !playerXTurn;
 }
@@ -68,4 +80,11 @@ function newGame() {
     playerXTurn = true;
 }
 
+function resetScore() {
+    document.querySelector("#playerXScore").innerText = 0;
+    document.querySelector("#playerOScore").innerText = 0;
+    newGame();
+}
+
 document.querySelector("#btnNewGame").addEventListener('click', newGame);
+document.querySelector("#btnReset").addEventListener('click', resetScore);
