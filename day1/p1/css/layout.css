@@ -1,0 +1,12 @@
+#imgLight {
+    border: 1px solid #ccc;
+    transition: all 500ms;
+}
+
+.tiltUp {
+    transform: rotate(3600deg);
+}
+
+.tiltDown {
+    transform: rotate(-360deg);
+}
