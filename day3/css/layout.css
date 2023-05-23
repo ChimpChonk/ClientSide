@@ -9,6 +9,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image: url("../image/BackGround.avif");
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
 .wrapper {
