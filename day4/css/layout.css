@@ -1,0 +1,19 @@
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+img {
+    width: 300px;
+}
+
+.errMsg {
+    width: 350px;
+    height: 350px;
+    border: 2px solid red;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
