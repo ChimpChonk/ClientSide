@@ -5,8 +5,13 @@
 }
 
 .wrapper {
+    background-image: url("../img/background.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
     width: 100vw;
     height: 100vh;
+    overflow: auto;
+    overflow-wrap: break-word;
 }
 
 .nav-bar {
@@ -18,8 +23,34 @@
 }
 
 .nav-item {
-    color: white;
+    color:rgb(248, 232, 0);
     text-decoration: none;
     font-size: 1.5em;
     text-transform: capitalize;
+}
+
+.card-container {
+    max-width: 80%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    margin: auto;
+}
+
+.card{
+    padding: 10px;
+    border: 2px solid rgb(248, 232, 0);
+    margin: 10px;
+}
+
+.key {
+    font-weight: bold;
+    text-transform: capitalize;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: rgb(248, 232, 0);
+}
+
+.value {
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(220, 201, 0);
+
 }

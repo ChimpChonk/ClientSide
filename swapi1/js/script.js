@@ -28,16 +28,18 @@ async function navClick(e){
                 let itemDiv = document.createElement("p");
                 itemDiv.innerText = `${subSubItem}: ${data.results[subItem][subSubItem]}`;
                 dataPrint.appendChild(itemDiv);
+                for(let subSubSubItem in data.results[subItem][subItem]){
+                    let subItemDiv = document.createElement("p");
+                    subItemDiv.innerText = `${subSubSubItem}: ${data.results[subItem][subItem][subSubSubItem]}`;
+                    dataPrint.appendChild(subItemDiv);
+                    for(let subSubSubSubItem in data.results[subItem][subItem][subSubSubItem]){
+                        
+                    }
+                }
             }
-            // let itemDiv = document.createElement("p");
-            // itemDiv.innerText = `${subItem}: ${data.results[subItem]}`;
-            // dataPrint.appendChild(itemDiv);
             let line = document.createElement("hr");
             dataPrint.appendChild(line);
         }
-        // let itemDiv = document.createElement("p");
-        // itemDiv.innerText = `${item}: ${data[item]}`;
-        // dataPrint.appendChild(itemDiv);
     }
 
 
