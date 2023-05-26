@@ -1,3 +1,4 @@
+import { ignore } from "./modules/filter.js";
 
 const swapiApp = (async function() 
 {
@@ -5,8 +6,8 @@ const swapiApp = (async function()
     const navBar = document.querySelector("#nav-bar");
     const cardContrainer = document.querySelector(".card-container");
     const buttonNextPrec = document.querySelector(".button-next-prev");
-    let next = "";
-    let previous = "";
+    let nextData = "";
+    let previousData = "";
 
     try 
     {
@@ -37,27 +38,39 @@ const swapiApp = (async function()
         document.querySelector(".active")?.classList.remove("active");
         this.classList.add("active");
         let data = await getData(this.href);
-        navButton();
         deleteCard();
-        data.results.forEach(dataItem =>{
+        if(data.previous == null){
+            buttonNextPrec.removeChild(buttonNextPrec.firstChild);
+        }
+        previousData = data.previous;
+        nextData = data.next;
+        showData(data);
+
+    }
+    
+    function showData(data) {
+        data.results.forEach(dataItem => {
             let card = document.createElement("div");
             card.className = "card";
-            next = data.next;
-            previous = data.previous;
-            for(let [k, v] of Object.entries(dataItem))
-            {
-                card.insertAdjacentHTML("beforeend", `<span class="key">${k}:</span> <span class="value">${v}</span><br><hr>`)
+            for (let [k, v] of Object.entries(dataItem)) {
+                if (ignore.includes(k)) {
+                    continue;
+                }
+                card.insertAdjacentHTML("beforeend", `<span class="key">${k.replace("_", " ")}:</span> <span class="value">${v}</span><br><hr>`);
             }
             cardContrainer.appendChild(card);
-        })
+        });
     }
-
     async function getData(url)
     {
         try
         {
             const response = await fetch(url);
-            return await response.json();
+            const data = await response.json();
+            previousData = data.previous; // Update previousData
+            nextData = data.next; // Update nextData
+            navButton(); // Move this line here
+        return data;
         }
         catch(error)
         {
@@ -75,12 +88,12 @@ const swapiApp = (async function()
     function navButton(){
         let nextButton = document.createElement("button");
         let prevButton = document.createElement("button");
-        nextButton.className = "button-next-prev";
-        prevButton.className = "button-next-prev";
+        nextButton.className = "button-nav";
+        prevButton.className = "button-nav";
         nextButton.innerText = "Next";
         prevButton.innerText = "Prev";
-        nextButton.href = next;
-        prevButton.href = previous;
+        nextButton.href = nextData;
+        prevButton.href = previousData;
         buttonNextPrec.appendChild(prevButton);
         buttonNextPrec.appendChild(nextButton);
         nextButton.addEventListener("click", navClick);
