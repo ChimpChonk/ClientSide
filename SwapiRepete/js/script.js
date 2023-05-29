@@ -48,14 +48,24 @@ const swapiApp = (async function () {
 
 
     function showData(data) {
-        data.results.forEach(dataItem => {
+        data.results.forEach(async dataItem => {
             let card = document.createElement("div");
             card.className = "card";
             for (let [k, v] of Object.entries(dataItem)) {
                 if (ignore.includes(k)) {
                     continue;
                 }
-                card.insertAdjacentHTML("beforeend", `<span class="key">${k.replace("_", " ")}:</span> <span class="value">${v}</span><br><hr>`);
+                if (k == "homeworld") {
+                    let homeworld = await getData(v);
+                    //console.log(homeworld);
+                    card.insertAdjacentHTML("beforeend", `<span class="key">${k}: </span> <span class="value">${homeworld.name}</span><br><hr>`);
+                }
+                else if (v == null) {
+                    card.insertAdjacentHTML("beforeend", `<span class="key">Homeworld: </span> <span class="value">N/A</span><br><hr>`);
+                    }
+                else{
+                    card.insertAdjacentHTML("beforeend", `<span class="key">${k.replace("_", " ")}:</span> <span class="value">${v}</span><br><hr>`);
+                }
             }
             cardContrainer.appendChild(card);
         });

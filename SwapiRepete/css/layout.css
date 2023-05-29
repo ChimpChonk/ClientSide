@@ -30,8 +30,8 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    margin-top: 5px;
-    position: sticky;
+    margin: 10px;
+    /* position: sticky; */
     top: 0;
     z-index: 10;
 }
