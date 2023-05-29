@@ -1,7 +1,6 @@
 import { ignore } from "./modules/filter.js";
 
-const swapiApp = (async function() 
-{
+const swapiApp = (async function () {
     const SWApIURL = "https://swapi.dev/api";
     const navBar = document.querySelector("#nav-bar");
     const cardContrainer = document.querySelector(".card-container");
@@ -9,12 +8,10 @@ const swapiApp = (async function()
     let nextData = "";
     let previousData = "";
 
-    try 
-    {
+    try {
         const response = await fetch(SWApIURL);
         const jsonData = await response.json();
-        for(let key in jsonData)
-        {
+        for (let key in jsonData) {
             let navItem = document.createElement("a");
             navItem.addEventListener("click", navClick)
             navItem.className = "nav-item";
@@ -22,16 +19,14 @@ const swapiApp = (async function()
             navItem.href = jsonData[key];
             navBar.appendChild(navItem);
         }
-        
-        
+        document.querySelectorAll(".nav-item")[0].click();
+
     }
-    catch (error) 
-    {
+    catch (error) {
         console.log(error);
     }
 
-    async function navClick(e)
-    {
+    async function navClick(e) {
         e.preventDefault();
         deleteNavButton();
         // cardContrainer.innerHTML = "";
@@ -39,15 +34,19 @@ const swapiApp = (async function()
         this.classList.add("active");
         let data = await getData(this.href);
         deleteCard();
-        if(data.previous == null){
-            buttonNextPrec.removeChild(buttonNextPrec.firstChild);
-        }
-        previousData = data.previous;
-        nextData = data.next;
         showData(data);
 
     }
-    
+    async function pageChange(e) {
+        e.preventDefault();
+        deleteNavButton();
+        let data = await getData(this.href);
+        deleteCard();
+        showData(data);
+    }
+
+
+
     function showData(data) {
         data.results.forEach(dataItem => {
             let card = document.createElement("div");
@@ -61,48 +60,47 @@ const swapiApp = (async function()
             cardContrainer.appendChild(card);
         });
     }
-    async function getData(url)
-    {
-        try
-        {
+    async function getData(url) {
+        try {
             const response = await fetch(url);
             const data = await response.json();
             previousData = data.previous; // Update previousData
             nextData = data.next; // Update nextData
-            navButton(); // Move this line here
-        return data;
+            navButton(data); // Move this line here
+            return data;
         }
-        catch(error)
-        {
+        catch (error) {
             console.log(error);
         }
     }
 
-    function deleteCard(){
-        while(cardContrainer.firstChild)
-        {
+    function deleteCard() {
+        while (cardContrainer.firstChild) {
             cardContrainer.removeChild(cardContrainer.firstChild);
         }
     }
 
-    function navButton(){
-        let nextButton = document.createElement("button");
-        let prevButton = document.createElement("button");
-        nextButton.className = "button-nav";
-        prevButton.className = "button-nav";
-        nextButton.innerText = "Next";
-        prevButton.innerText = "Prev";
-        nextButton.href = nextData;
-        prevButton.href = previousData;
-        buttonNextPrec.appendChild(prevButton);
-        buttonNextPrec.appendChild(nextButton);
-        nextButton.addEventListener("click", navClick);
-        prevButton.addEventListener("click", navClick);
+    function navButton(data) {
+        if (data.previous != null) {
+            let prevButton = document.createElement("button");
+            prevButton.className = "button-nav";
+            prevButton.innerText = "Prev";
+            prevButton.href = previousData;
+            buttonNextPrec.appendChild(prevButton);
+            prevButton.addEventListener("click", pageChange);
+        }
+        if (data.next != null) {
+            let nextButton = document.createElement("button");
+            nextButton.className = "button-nav";
+            nextButton.innerText = "Next";
+            nextButton.href = nextData;
+            buttonNextPrec.appendChild(nextButton);
+            nextButton.addEventListener("click", pageChange);
+        }
     }
 
-    function deleteNavButton(){
-        while(buttonNextPrec.firstChild)
-        {
+    function deleteNavButton() {
+        while (buttonNextPrec.firstChild) {
             buttonNextPrec.removeChild(buttonNextPrec.firstChild);
         }
     }
