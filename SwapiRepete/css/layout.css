@@ -65,6 +65,12 @@
     border-radius: 10px;
 }
 
+.card:hover {
+    transform: translateY(-5px) scale(1.005) translateZ(0);
+    box-shadow: 0 24px 36px rgba(0,0,0,0.11),
+    
+}
+
 .key {
     font-weight: bold;
     text-transform: capitalize;
@@ -123,3 +129,4 @@ ul {
     display: inline-table;
     list-style-type: none;
 }
+
