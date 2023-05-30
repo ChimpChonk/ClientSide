@@ -50,6 +50,7 @@ const swapiApp = (async function () {
 
     function showData(data) {
         data.results.forEach(async dataItem => {
+            deleteDetailCard();
             let card = document.createElement("div");
             card.className = "card";
             let clickable = document.createElement("a");
