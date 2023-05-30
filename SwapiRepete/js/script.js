@@ -5,6 +5,7 @@ const swapiApp = (async function () {
     const navBar = document.querySelector("#nav-bar");
     const cardContrainer = document.querySelector(".card-container");
     const buttonNextPrec = document.querySelector(".button-next-prev");
+    const itemDetail = document.querySelector(".item-detail");
     let nextData = "";
     let previousData = "";
 
@@ -29,7 +30,6 @@ const swapiApp = (async function () {
     async function navClick(e) {
         e.preventDefault();
         deleteNavButton();
-        // cardContrainer.innerHTML = "";
         document.querySelector(".active")?.classList.remove("active");
         this.classList.add("active");
         let data = await getData(this.href);
@@ -42,6 +42,7 @@ const swapiApp = (async function () {
         deleteNavButton();
         let data = await getData(this.href);
         deleteCard();
+        deleteDetailCard();
         showData(data);
     }
 
@@ -51,6 +52,8 @@ const swapiApp = (async function () {
         data.results.forEach(async dataItem => {
             let card = document.createElement("div");
             card.className = "card";
+            let clickable = document.createElement("a");
+            clickable.href = dataItem.url;
             for (let [k, v] of Object.entries(dataItem)) {
                 if (ignore.includes(k)) {
                     continue;
@@ -64,12 +67,48 @@ const swapiApp = (async function () {
                     card.insertAdjacentHTML("beforeend", `<span class="key">Homeworld: </span> <span class="value">N/A</span><br><hr>`);
                     }
                 else{
-                    card.insertAdjacentHTML("beforeend", `<span class="key">${k.replace("_", " ")}:</span> <span class="value">${v}</span><br><hr>`);
+                    card.insertAdjacentHTML("beforeend", `<span class="key">${k.replace("_", " ")}: </span> <span class="value">${v}</span><br><hr>`);
                 }
             }
+            card.appendChild(clickable);
             cardContrainer.appendChild(card);
+            card.addEventListener("click", async function (e) {
+            await showCardDetail(clickable);});
         });
     }
+
+    async function showCardDetail(url){
+        deleteCard();
+        deleteNavButton();
+        deleteDetailCard();
+        let cardData = await getData(url);
+        console.log("show detail clicked");
+        let detailCard = document.createElement("div");
+        // let listItem = document.createElement("li");
+        detailCard.className = "detail-card";
+        console.log(cardData);
+        for (let [key, value] of Object.entries(cardData)) {
+            detailCard.insertAdjacentHTML("beforeend", `<span class="key">${key.replace("_", " ")}: </span>`);
+            if (Array.isArray(value)) {          
+                let list = document.createElement("ul");
+                value.forEach(item => {
+                    let listItem = document.createElement("li");
+                    listItem.insertAdjacentHTML("beforeend", `<span class="value">${item}</span><br>`)
+                    list.appendChild(listItem);
+                });
+                detailCard.appendChild(list);
+                detailCard.insertAdjacentHTML("beforeend","<hr>")
+            }
+            else{
+                detailCard.insertAdjacentHTML("beforeend", `<span class="value">${value}</span><br><hr>`);
+            }
+            
+            console.log(key, value);
+        }
+        itemDetail.appendChild(detailCard);
+    }
+
+
     async function getData(url) {
         try {
             const response = await fetch(url);
@@ -87,6 +126,12 @@ const swapiApp = (async function () {
     function deleteCard() {
         while (cardContrainer.firstChild) {
             cardContrainer.removeChild(cardContrainer.firstChild);
+        }
+    }
+
+    function deleteDetailCard() {
+        while (itemDetail.firstChild) {
+            itemDetail.removeChild(itemDetail.firstChild);
         }
     }
 

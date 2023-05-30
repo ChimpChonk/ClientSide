@@ -54,6 +54,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     margin: auto;
+    cursor: pointer;
 }
 
 .card{
@@ -101,4 +102,24 @@ hr{
 .button-nav:hover {
     background-color: rgb(248, 232, 0);
     color: black;
+}
+
+.item-detail{
+    border-radius: 10px;
+    border: 2px solid rgb(248, 232, 0);
+    background-color: rgba(0, 0, 0, 0.7);
+    max-width: 80%;
+    margin: auto;
+}
+
+.detail-card {
+    padding: 10px;
+    border: 2px solid rgb(248, 232, 0);
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+}
+
+ul {
+    display: inline-table;
+    list-style-type: none;
 }
